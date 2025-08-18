@@ -1,6 +1,7 @@
-import GalleryCarousel from "@/components/GalleryCarousel";
-import HeroSpecials from "@/components/HeroSpecials";
 import NavbarHero from "@/components/NavbarHero";
+import HeroSpecials from "@/components/HeroSpecials";
+import MenuSection from "@/components/MenuSection";
+import GalleryCarousel from "@/components/GalleryCarousel";
 import ReserveSection from "@/components/ReserveSection";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
     <>
       <NavbarHero />
       <HeroSpecials />
+      <MenuSection />
       <GalleryCarousel />
       <ReserveSection />
     </>
