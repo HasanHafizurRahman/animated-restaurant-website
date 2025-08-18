@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useReducedMotion } from 'framer-motion';
 
 export default function NavbarHero() {
   const [open, setOpen] = useState(false);
@@ -14,6 +14,8 @@ export default function NavbarHero() {
   const floatY = useTransform(pointerY, (v) => `${v / 20}px`);
   const slowX = useTransform(pointerX, (v) => `${v / 30}px`);
   const slowY = useTransform(pointerY, (v) => `${v / 38}px`);
+
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const el = containerRef.current;
@@ -199,6 +201,68 @@ export default function NavbarHero() {
               <motion.div className="absolute -top-4 right-6 w-1.5 h-1.5 rounded-full" animate={{ y: [-4, -10, -4], opacity: [0.9, 0.2, 0.9] }} transition={{ duration: 1.6, repeat: Infinity }} style={{ background: 'radial-gradient(circle,#fff7ed,#ffd59e)' }} />
 
             </motion.div>
+
+            {/* QUICK 'GIF-LIKE' INGREDIENT TOSS (fast loop) */}
+            <div className="absolute -bottom-6 right-0 w-56 h-24 pointer-events-none">
+              {/* three fast ingredient icons that swoosh into the plate */}
+              {!shouldReduceMotion && (
+                <>
+                  <motion.div
+                    className="absolute w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+                    initial={{ x: 120, y: 40, opacity: 0, scale: 0.6 }}
+                    animate={{ x: [120, 40, 10, -20], y: [40, 10, -6, -10], opacity: [0, 1, 1, 0], scale: [0.6, 1, 0.95, 0.6], rotate: [0, 20, -10, 25] }}
+                    transition={{ duration: 1.1, repeat: Infinity, delay: 0, ease: 'easeOut' }}
+                    style={{ background: 'linear-gradient(180deg,#FFD59E,#F6A04D)' }}
+                  >
+                    {/* small cheese slice */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M3 3l18 9-9 9L3 12V3z" fill="#FFD166" />
+                    </svg>
+                  </motion.div>
+
+                  <motion.div
+                    className="absolute w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+                    initial={{ x: 140, y: 20, opacity: 0, scale: 0.6 }}
+                    animate={{ x: [140, 60, 20, -10], y: [20, -6, -18, -20], opacity: [0, 1, 1, 0], scale: [0.6, 1, 0.95, 0.6], rotate: [0, -10, 10, -25] }}
+                    transition={{ duration: 1.2, repeat: Infinity, delay: 0.15, ease: 'easeOut' }}
+                    style={{ background: 'linear-gradient(180deg,#A7F3D0,#34D399)' }}
+                  >
+                    {/* small basil leaf */}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 12c4-6 10-8 16-4-4 2-6 6-16 4z" fill="#34D399" />
+                    </svg>
+                  </motion.div>
+
+                  <motion.div
+                    className="absolute w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+                    initial={{ x: 160, y: 10, opacity: 0, scale: 0.6 }}
+                    animate={{ x: [160, 80, 30, -5], y: [10, -8, -20, -26], opacity: [0, 1, 1, 0], scale: [0.6, 1, 0.95, 0.6], rotate: [0, 30, -20, 40] }}
+                    transition={{ duration: 1.3, repeat: Infinity, delay: 0.28, ease: 'easeOut' }}
+                    style={{ background: 'linear-gradient(180deg,#FF6B6B,#FF4D4D)' }}
+                  >
+                    {/* small chili/tomato */}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="6" fill="#FF4D4D" />
+                    </svg>
+                  </motion.div>
+                </>
+              )}
+
+              {/* if user prefers reduced motion, show static icons as fallback */}
+              {shouldReduceMotion && (
+                <div className="absolute right-4 bottom-2 flex gap-3">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(180deg,#FFD59E,#F6A04D)' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3l18 9-9 9L3 12V3z" fill="#FFD166" /></svg>
+                  </div>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(180deg,#A7F3D0,#34D399)' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12c4-6 10-8 16-4-4 2-6 6-16 4z" fill="#34D399" /></svg>
+                  </div>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(180deg,#FF6B6B,#FF4D4D)' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" fill="#FF4D4D" /></svg>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* rotating plate */}
             <motion.div
