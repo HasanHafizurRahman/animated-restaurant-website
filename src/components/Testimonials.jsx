@@ -17,14 +17,14 @@ const sampleTestimonials = [
     name: 'Liam K.',
     title: 'Designer',
     text: "The chef's tasting blew my mind — layers of flavour and show. Book early for weekend nights.",
-    avatar: '/images/testimonials/liam.jpg',
+    avatar: '/images/testimonials/liam.png',
   },
   {
     id: 3,
     name: 'Ava S.',
     title: 'Local Guide',
     text: "Fast, exciting plating — great for date night. The cocktails were bold and perfectly balanced.",
-    avatar: '/images/testimonials/ava.jpg',
+    avatar: '/images/testimonials/ava.png',
   },
 ];
 
