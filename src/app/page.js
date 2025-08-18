@@ -1,3 +1,4 @@
+import GalleryCarousel from "@/components/GalleryCarousel";
 import HeroSpecials from "@/components/HeroSpecials";
 import NavbarHero from "@/components/NavbarHero";
 
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <NavbarHero />
       <HeroSpecials />
+      <GalleryCarousel />
     </>
   );
 }
