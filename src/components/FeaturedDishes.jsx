@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence, useReducedMotion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  useAnimation,
+} from 'framer-motion';
 
 const sampleDishes = [
   { id: 1, name: 'Smoky Ember Burger', desc: 'Oak-smoked patty, melted cheese, pickled slaw', price: '$14', tag: "Chef's Pick", image: '/images/dishes/burger.png' },
@@ -86,6 +94,36 @@ export default function FeaturedDishes({ items = sampleDishes }) {
   const shouldReduceMotion = useReducedMotion();
   const [selected, setSelected] = useState(null);
 
+  // controls for delaying animation until the section is visible
+  const controls = useAnimation();
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    // If user prefers reduced motion, show immediately
+    if (shouldReduceMotion) {
+      controls.start('show');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          controls.start('show');
+          observer.disconnect(); // start once
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -20% 0px', // trigger slightly before center
+        threshold: 0.12,
+      }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, [controls, shouldReduceMotion]);
+
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') setSelected(null); }
     window.addEventListener('keydown', onKey);
@@ -98,7 +136,7 @@ export default function FeaturedDishes({ items = sampleDishes }) {
   };
 
   return (
-    <section className="relative max-w-7xl mx-auto px-6 py-12 lg:py-20">
+    <section ref={sectionRef} className="relative max-w-7xl mx-auto px-6 py-12 lg:py-20">
       <div className="absolute inset-0 -z-10">
         <LiquidBlob reduced={shouldReduceMotion} style={{ transform: 'translateY(-12%) scale(1.2)' }} />
       </div>
@@ -127,7 +165,12 @@ export default function FeaturedDishes({ items = sampleDishes }) {
         </div>
       </div>
 
-      <motion.div variants={container} initial="hidden" animate={shouldReduceMotion ? undefined : 'show'} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate={controls}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10"
+      >
         {items.map((d, i) => (
           <DishCard key={d.id} d={d} index={i} onSelect={() => setSelected(d)} shouldReduceMotion={shouldReduceMotion} />
         ))}
@@ -242,7 +285,7 @@ function DishCard({ d, index, onSelect, shouldReduceMotion }) {
 
       {/* body */}
       <div className="p-4 relative z-10">
-        <div className="absolute left-0 top-8 h-full pointer-events-none overflow-hidden" style={{ width: '80%' }}>
+        <div className="absolute left-0 top-8 h-full pointer-events-none overflow-hidden" style={{ width: '40%' }}>
           <LiquidBody index={index} reduced={shouldReduceMotion} />
         </div>
 
