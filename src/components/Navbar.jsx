@@ -1,3 +1,4 @@
+// Navbar.jsx (updated)
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -6,7 +7,7 @@ import { useMotionValue } from 'framer-motion';
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // pointer-based parallax
+  // pointer-based parallax (kept as you had it)
   const containerRef = useRef(null);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
@@ -26,7 +27,8 @@ export default function Navbar() {
   }, [pointerX, pointerY]);
 
   return (
-    <div className="bg-gradient-to-b from-[#fffaf0] to-white/90">
+    // no gradient here — navbar sits above the hero gradient
+    <div className="relative z-50" ref={containerRef}>
       {/* NAVBAR */}
       <nav className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -55,7 +57,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-100 text-amber-700 font-medium shadow-sm hover:shadow-md transition">
+          <button className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-100 text-amber-700 font-medium shadow-sm hover:shadow-md transition bg-white/30 backdrop-blur-sm">
             Reserve Table
           </button>
 

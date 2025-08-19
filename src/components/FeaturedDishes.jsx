@@ -27,7 +27,7 @@ const sampleDishes = [
   },
 ];
 
-export default function HeroSpecials({ items = sampleDishes }) {
+export default function FeaturedDishes({ items = sampleDishes }) {
   const shouldReduceMotion = useReducedMotion();
 
   const container = {
