@@ -4,7 +4,11 @@ import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useTransform, useReducedMotion, useSpring } from 'framer-motion';
 
-export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Signature dish' }) {
+export default function HeroMain({
+  image = '/images/hero/plate.png',
+  chefImage = '/images/hero/chef.png',
+  alt = 'Signature dish',
+}) {
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
@@ -13,7 +17,6 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
   const py = useMotionValue(0);
 
   // smooth the pointer values with a spring for gentle, lagged motion
-  // lower stiffness -> smoother, higher damping -> less wobble
   const springConfig = shouldReduceMotion ? { stiffness: 1000, damping: 1000 } : { stiffness: 60, damping: 18 };
   const spx = useSpring(px, springConfig);
   const spy = useSpring(py, springConfig);
@@ -43,7 +46,6 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
       // scale down raw input a bit so motion is less aggressive
       px.set(x * 0.7);
       py.set(y * 0.65);
-      // prevent excessive DOM updates
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {});
     }
@@ -82,7 +84,7 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
   return (
     <main className="max-w-7xl mx-auto px-6 py-14 lg:py-24" ref={containerRef}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        {/* LEFT: keep copy strong but refine spacing */}
+        {/* LEFT: copy */}
         <motion.section variants={containerVariant} initial="hidden" animate="show" className="space-y-6 lg:col-span-5">
           <motion.div variants={fadeUp} className="inline-flex items-center gap-3 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full text-sm font-medium w-max">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v18" stroke="#b45309" strokeWidth="1.4" strokeLinecap="round"/></svg>
@@ -118,7 +120,7 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
           </motion.div>
         </motion.section>
 
-        {/* RIGHT: denser visual composition but gentler motion */}
+        {/* RIGHT: denser visual composition with chef panel */}
         <section className="relative flex items-center justify-center lg:col-span-7">
           {/* background photographic panel (large, fills column) */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
@@ -139,7 +141,7 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
             <div className="absolute -left-24 -top-12 w-[36%] h-[140%] transform -skew-x-12 rounded-3xl pointer-events-none" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.02), rgba(251,113,133,0.05))', filter: 'blur(26px)' }} />
           </div>
 
-          {/* center plate composition - larger, cropped and dramatic */}
+          {/* center plate composition */}
           <motion.div
             style={{ x: plateX, y: plateY, rotateY: rotY, rotateX: rotX, transformStyle: 'preserve-3d' }}
             animate={shouldReduceMotion ? {} : { rotate: [0, 0.6, -0.45, 0], y: [0, -6, 0] }}
@@ -151,14 +153,10 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
 
             {/* plate frame */}
             <div className="relative rounded-full w-[78%] h-[78%] flex items-center justify-center bg-white/96 shadow-[0_40px_80px_rgba(236,72,153,0.06)]" style={{ backdropFilter: 'blur(6px)' }}>
-              {/* dish image - big, crisp, with tilt-shift effect and radial vignette */}
               <div className="relative w-[86%] h-[86%] rounded-full overflow-hidden shadow-2xl">
                 <Image src={image} alt={alt} fill className="object-cover" sizes="(max-width: 1024px) 60vw, 720px" priority={true} />
-
-                {/* radial vignette + depth-of-field mask */}
                 <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 34px 58px rgba(0,0,0,0.16)', borderRadius: '9999px' }} aria-hidden />
 
-                {/* plate specular sweep */}
                 {!shouldReduceMotion && (
                   <motion.div
                     initial={{ x: '-140%' }}
@@ -170,11 +168,10 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
                   />
                 )}
 
-                {/* subtle animated noise / grain overlay for cinematic feel */}
                 <div className="absolute inset-0 opacity-8 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '3px 3px' }} aria-hidden />
               </div>
 
-              {/* interactive hotspots on plate (Order / Ingredients) */}
+              {/* interactive hotspots */}
               {!shouldReduceMotion && (
                 <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3">
                   <button className="px-4 py-2 rounded-full bg-amber-600 text-white font-medium shadow-lg hover:scale-[1.025] focus:outline-none focus:ring-4 focus:ring-amber-200/30 transition-transform">Order Now</button>
@@ -183,7 +180,7 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
               )}
             </div>
 
-            {/* chef badge (top-left overlapping) */}
+            {/* chef badge */}
             {!shouldReduceMotion && (
               <motion.div initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: [1, 1.01, 1], opacity: 1 }} transition={{ duration: 1.0 }} className="absolute left-6 top-6 rounded-xl bg-white/72 border border-white/10 px-3 py-2 shadow backdrop-blur-sm flex items-center gap-3">
                 <div className="w-9 h-9 rounded-md overflow-hidden">
@@ -196,7 +193,7 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
               </motion.div>
             )}
 
-            {/* floating ingredient accents (small circles with label on hover) */}
+            {/* floating ingredient accents */}
             {!shouldReduceMotion && ingred.map((it, i) => (
               <motion.div key={it.id} initial={{ y: 0, opacity: 0 }} animate={{ y: [ -4, 0, -3 ], opacity: [1] }} transition={{ duration: 6 + i, repeat: Infinity, ease: 'easeInOut' }} className="absolute pointer-events-none" style={{ left: `calc(50% + ${it.x}px)`, top: `calc(50% + ${it.y}px)` }}>
                 <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-white/96 overflow-hidden" title={it.label}>
@@ -205,15 +202,48 @@ export default function HeroMain({ image = '/images/hero/plate.png', alt = 'Sign
               </motion.div>
             ))}
 
-            {/* rising steam clusters centered over dish */}
+            {/* steam clusters */}
             {!shouldReduceMotion && steamDefs.map((s, idx) => (
               <motion.div key={idx} initial={{ y: 18, opacity: 0, scale: 0.98 }} animate={{ y: [-6 - idx * 6, -68 - idx * 28], opacity: [0, 0.9, 0], scale: [0.98, 1.03, 0.99] }} transition={{ duration: s.duration, delay: s.delay, repeat: Infinity, ease: 'easeOut' }} className="absolute left-[50%] w-36 h-36 rounded-full pointer-events-none" style={{ transform: `translateX(${idx * 14}px)`, filter: 'blur(26px)', background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 100%)' }} aria-hidden />
             ))}
 
           </motion.div>
 
-          {/* caption under the image, tighter and bolder */}
-          <div className="mt-6 text-center text-sm text-neutral-600 w-full">Artful plates • Live-fire techniques • Seasonal produce</div>
+          {/* caption */}
+          <div className="mt-6 text-center text-sm text-neutral-600 w-full"></div>
+
+          {/* NEW: Chef panel on the far-right overlapping the hero (visible on lg+) */}
+          <div className="hidden lg:block absolute right-6 top-12 bottom-12 w-52 pointer-events-auto">
+            <motion.div initial={{ x: 36, opacity: 0, scale: 0.98 }} animate={{ x: 0, opacity: 1, scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} className="relative w-full h-full rounded-2xl bg-white/75 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden">
+              {/* chef image (portrait) */}
+              <div className="absolute inset-0">
+                <Image src={chefImage} alt="Chef cooking" fill className="object-cover" sizes="208px" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              </div>
+
+              {/* overlay content */}
+              <div className="absolute bottom-4 left-4 right-4 text-left text-sm text-white">
+                <div className="text-xs font-semibold text-amber-300">Meet the Chef</div>
+                <div className="font-bold text-lg mt-1">Chef Rahim</div>
+                <div className="text-xs text-white/90 mt-1">Flame-grill specialist • Live-fire plating</div>
+
+                <div className="mt-3 flex gap-2">
+                  <button className="px-3 py-1 rounded-full bg-amber-600 text-white text-sm font-semibold shadow-md">Watch</button>
+                  <button className="px-2 py-1 rounded-full bg-white/20 text-white text-xs">Bio</button>
+                </div>
+              </div>
+
+              {/* small animated flame near bottom-left to hint action */}
+              {!shouldReduceMotion && (
+                <motion.div animate={{ y: [0, -6, 0], scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }} className="absolute left-4 bottom-14 w-10 h-10 rounded-full bg-amber-50/90 flex items-center justify-center shadow-md">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3c-2 3-6 5-5 9 1 4 6 5 6 9 0-4 5-5 6-9 1-4-3-6-7-9z" fill="#fb7185" />
+                    <path d="M12 6c-1.2 1.7-3 2.5-2.5 4 0.6 1.6 2.5 1.8 3 3 0-1.6 1.5-1.8 2.2-3 0.7-1.2-1.5-2.2-2.7-4z" fill="#f97316" />
+                  </svg>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
         </section>
       </div>
     </main>
