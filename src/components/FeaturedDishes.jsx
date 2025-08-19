@@ -242,7 +242,7 @@ function DishCard({ d, index, onSelect, shouldReduceMotion }) {
 
       {/* body */}
       <div className="p-4 relative z-10">
-        <div className="absolute left-0 top-10 h-full pointer-events-none overflow-hidden" style={{ width: '80%' }}>
+        <div className="absolute left-0 top-8 h-full pointer-events-none overflow-hidden" style={{ width: '80%' }}>
           <LiquidBody index={index} reduced={shouldReduceMotion} />
         </div>
 
