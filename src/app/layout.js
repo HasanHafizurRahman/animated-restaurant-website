@@ -16,7 +16,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: 'My Restaurant',
+  title: 'Aroma & Co.',
 };
 
 export default function RootLayout({ children }) {

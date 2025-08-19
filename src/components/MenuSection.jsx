@@ -202,7 +202,7 @@ export default function MenuSection({
                       <div className="p-4 flex items-center gap-3">
                         <button className="px-3 py-2 rounded-full bg-amber-50 text-amber-700 text-sm font-semibold hover:scale-105 transition">View</button>
                         <motion.button whileTap={{ scale: 0.96 }} className="ml-auto px-4 py-2 rounded-full bg-amber-600 text-white font-semibold shadow-md hover:shadow-lg transition">
-                          Add
+                          Reserve
                         </motion.button>
                       </div>
 
