@@ -1,6 +1,7 @@
 import { Footer } from '@/components/Footer';
 import './globals.css';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.variable} ${jetbrains.variable} antialiased`}>
+        <Navbar />
         {children}
         <Footer />
       </body>
